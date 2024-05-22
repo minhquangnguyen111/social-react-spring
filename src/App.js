@@ -1,24 +1,38 @@
-import logo from './logo.svg';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import Authentication from './pages/Authentication/Authentication';
+import HomePage from './pages/Homepage/HomePage';
+import Message from './pages/Message/Message';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { getProfileAction } from './Redux/Auth/auth.action';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import { ThemeProvider } from '@emotion/react';
+import { darkTheme } from './theme/DarkTheme';
+import Profile from './pages/Profile/Profile';
+import Reels from './components/Reels/Reels';
 
 function App() {
+  const { auth } = useSelector(store => store);
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
+  useEffect(() => {
+    dispatch(getProfileAction(jwt))
+  }, [jwt])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <ThemeProvider theme={darkTheme}>
+      <header>
+        <Routes>
+
+          <Route path='/*' element={auth.user ? <HomePage /> : <Authentication />} />
+          <Route path='/message' element={auth.user ? <Message /> : <Authentication />} />
+          <Route path='/*' element={<Authentication />} />
+          <Route path='/profile' element={auth.user ? <Profile /> : <Authentication />} />
+        </Routes>
       </header>
-    </div>
+      <ToastContainer />
+    </ThemeProvider>
   );
 }
 
