@@ -14,7 +14,7 @@ export const loginUserAction = (loginData) => async (dispatch) => {
 
         if (response.data.token) {
             localStorage.setItem("jwt", response.data.token);
-            toast.success("Login successful");
+
             dispatch({ type: LOGIN_SUCCESS, payload: response.data }); // Sửa ở đây
         } else {
             dispatch({ type: LOGIN_FAILURE, payload: "ERROR" });

@@ -8,11 +8,17 @@ import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import './Authentication.css';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
+    const [showPassword, setShowPassword] = useState(false);
+    const sitekey = "6LczlukpAAAAAChXzK3dFrqxbRcR1ntY5mudikAT"
+    const [capVal, setCapVal] = useState(null);
+    const onChange = () => {
+
+    }
 
     const validationSchema = Yup.object().shape({
         email: Yup.string()
@@ -78,14 +84,21 @@ const Login = () => {
                                 <ErrorMessage name="password" component="div" className="text-red-500" />
                             </div>
                         </div>
+
+                        <ReCAPTCHA
+                            sitekey="6LfCmOkpAAAAANwsdy7rpj0-VNAq_ZgAEd_M3E0D"
+                            onChange={(val) => setCapVal(val)}
+                        />
+
                         <button
                             sx={{ padding: ".8rem 0rem" }}
                             fullWidth
                             type="submit"
                             variant='contained'
                             color='primary'
-                            disabled={isSubmitting}
+                            // disabled={isSubmitting}
                             className='btn '
+                            disabled={!capVal}
                         >
                             {isSubmitting ? "Logging in..." : "Login"}
                         </button>

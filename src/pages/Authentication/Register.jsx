@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import DoneIcon from '@mui/icons-material/Done';
 import './Authentication.css';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 
 const Register = () => {
@@ -17,7 +18,10 @@ const Register = () => {
     const [passwordsMatch, setPasswordsMatch] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [capVal, setCapVal] = useState(null);
+    const onChange = () => {
 
+    }
     const validationSchema = Yup.object().shape({
         firstName: Yup.string()
             .matches(/^[a-zA-Z\sáàảãạâấầẩẫậăắằẳẵặéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ]*$/, "First Name must contain only letters.")
@@ -187,6 +191,10 @@ const Register = () => {
                                 </RadioGroup>
                             </div>
                         </div>
+                        <ReCAPTCHA
+                            sitekey="6LfCmOkpAAAAANwsdy7rpj0-VNAq_ZgAEd_M3E0D"
+                            onChange={(val) => setCapVal(val)}
+                        />
                         <button
                             sx={{ padding: ".8rem 0rem" }}
                             fullWidth
@@ -194,6 +202,7 @@ const Register = () => {
                             variant='contained'
                             color='primary'
                             className='btn'
+                            disabled={!capVal}
                         >
                             Register
                         </button>
